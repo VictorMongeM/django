@@ -1,0 +1,69 @@
+<!-- Heredar la plantilla base.html -->
+{% extends "./base.html" %}
+
+{% block title %} Gestión de cursos {% endblock %}
+
+{% block body %}
+<div class="row">
+    <!-- Gestion de cursos -->
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        <br>
+        <h3>Gestión de curso</h3>
+        <div class="card">
+            <div class="card-body">
+                <!-- csrf_token es un token de seguridad que se debe enviar en los formularios -->
+                <!-- para evitar ataques de tipo CSRF (Cross-Site Request Forgery) -->
+                <!-- Ataques maliciosos que se envían a través de un enlace o un formulario en una página web -->
+                <form action="/registrarCurso/" method="POST">{% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" id="txtCodigo" name="txtCodigo" class="form-control" placeholder="Código" minlength="1" maxlength="6"required>
+                    </div><br>
+                    <div class="form-group">
+                        <input type="text" id="txtNombre" name="txtNombre" class="form-control" placeholder="Nombre"
+                            maxlength="50" required>
+                    </div><br>
+                    <div class="form-group">
+                        <input type="number" id="numCreditos" name="numCreditos" class="form-control" min="1" max="50"
+                            value="1" required>
+                    </div><br>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-block text-white">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- /Gestion de cursos -->
+
+    <!-- Listado de cursos -->
+    <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
+        <br>
+        <h3>Listado de cursos</h3>
+        <div class="table-responsive py-2">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Créditos</th>
+                        <th colspan="2">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in cursos %}
+                    <tr>
+                        <td>{{c.codigo}}</td>
+                        <td>{{c.nombre}}</td>
+                        <td>{{c.creditos}}</td>
+                        <!-- Rutas para editar y eliminar un curso -->
+                        <!-- Se envía el código del curso a través de la URL -->
+                        <td><a href="edicionCurso/{{c.codigo}}" class="btn btn-primary">Editar</a></td>
+                        <td><a href="eliminarCurso/{{c.codigo}}" class="btn btn-danger">Eliminar</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div><!-- /Listado de cursos -->
+
+</div>
+{% endblock %}
